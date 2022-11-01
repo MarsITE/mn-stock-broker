@@ -1,0 +1,13 @@
+PUT http://localhost:8080/account/watchlist
+Content-Type: application/json
+
+{
+  "symbols": [
+    {
+      "value": "GOOGL"
+    },
+    {
+      "value": "MSFT"
+    }
+  ]
+}

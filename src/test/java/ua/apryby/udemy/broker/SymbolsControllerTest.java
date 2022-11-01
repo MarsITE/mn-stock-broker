@@ -1,4 +1,4 @@
-package ua.apryby.udemy;
+package ua.apryby.udemy.broker;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.micronaut.http.HttpStatus;
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.apryby.udemy.broker.Symbol;
-import ua.apryby.udemy.broker.SymbolsController;
 import ua.apryby.udemy.broker.data.InMemoryStore;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
