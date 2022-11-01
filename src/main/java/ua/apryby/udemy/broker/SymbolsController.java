@@ -2,6 +2,7 @@ package ua.apryby.udemy.broker;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.PathVariable;
 import ua.apryby.udemy.broker.data.InMemoryStore;
 
 import java.util.ArrayList;
@@ -17,7 +18,12 @@ public class SymbolsController {
     }
 
     @Get
-    public List<Symbol> getAll(){
+    public List<Symbol> getAll() {
         return new ArrayList<>(inMemoryStore.getSymbols().values());
+    }
+
+    @Get("{value}")
+    public Symbol getSymbolByValue(@PathVariable String value) {
+        return inMemoryStore.getSymbols().get(value);
     }
 }
