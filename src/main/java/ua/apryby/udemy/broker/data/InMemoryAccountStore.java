@@ -1,8 +1,10 @@
 package ua.apryby.udemy.broker.data;
 
 import jakarta.inject.Singleton;
+import ua.apryby.udemy.broker.Symbol;
 import ua.apryby.udemy.broker.wallet.DepositFiatMoney;
 import ua.apryby.udemy.broker.wallet.Wallet;
+import ua.apryby.udemy.broker.wallet.WithdrawFiatMoney;
 import ua.apryby.udemy.broker.watchlist.WatchList;
 
 import java.math.BigDecimal;
@@ -37,16 +39,26 @@ public class InMemoryAccountStore {
 
     public Wallet depositToWallet(DepositFiatMoney deposit) {
 
+        return changeAvailableInWallet(deposit.accountId(), deposit.walletId(), deposit.symbol(), deposit.amount());
+    }
+
+    public Wallet withdrawFromWallet(WithdrawFiatMoney withdraw) {
+
+        return changeAvailableInWallet(withdraw.accountId(), withdraw.walletId(), withdraw.symbol(), withdraw.amount());
+    }
+
+    private Wallet changeAvailableInWallet(UUID accountId, UUID walletId, Symbol symbol, BigDecimal changeAmount) {
+
         final var wallets = Optional.ofNullable(
-                walletsPerAccount.get(deposit.accountId())
+                walletsPerAccount.get(accountId)
         ).orElse(new HashMap<>());
 
-        var oldWallet = Optional.ofNullable(wallets.get(deposit.walletId())
+        var oldWallet = Optional.ofNullable(wallets.get(walletId)
         ).orElse(
-                new Wallet(ACCOUNT_ID, deposit.walletId(), deposit.symbol(), BigDecimal.ZERO, BigDecimal.ZERO)
+                new Wallet(ACCOUNT_ID, walletId, symbol, BigDecimal.ZERO, BigDecimal.ZERO)
         );
 
-        var newWallet = oldWallet.addAvailable(deposit.amount());
+        var newWallet = oldWallet.addAvailable(changeAmount);
 
         wallets.put(newWallet.walletId(), newWallet);
         walletsPerAccount.put(newWallet.accountId(), wallets);
